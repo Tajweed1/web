@@ -390,9 +390,9 @@ const audioSources = {
   ق: "audios/قاف.mp3",
   ك: "audios/كاف.mp3",
   ج: "audios/جيم.mp3",
-  ش: "audios/شين.mp3",
+  ش: "audios/ش 2.mp3",
   ي: "audios/ياء غير .mp3",
-  ض: "audios/ضاد.mp3",
+  ض: "audios/ض 3.mp3",
   ل: "audios/لام.mp3",
   ن: "audios/نون.mp3",
   ر: "audios/راء.mp3",
@@ -405,7 +405,7 @@ const audioSources = {
   ص: "audios/صاد.mp3",
   س: "audios/سين.mp3",
   ز: "audios/زاي.mp3",
-  ف: "audios/فاء.mp3",
+  ف: "audios/ف 2.mp3",
   م: "audios/ميم.mp3",
   ب: "audios/باء .mp3",
   و: "audios/واو غير.mp3",
@@ -421,9 +421,10 @@ const exampleSources = {
   ق: "audios/قاف مثال.mp3",
   ك: "audios/كاف مثال.mp3",
   ج: "audios/جيم مثال.mp3",
-  ش: "audios/شين مثال.mp3",
+  ش: "audios/ش مثال 2.mp3",
   ي: "audios/شين مثال.mp3",
-  ض: "audios/ضاد مثال.mp3",
+  ض: "audios/ض مثال2.mp3",
+  ض2: "audios/ض مثال 3.mp3",
   ل: "audios/لام مثال.mp3",
   ن: "audios/نون مثا.mp3",
   ر: "audios/راء مثال.mp3",
@@ -436,7 +437,7 @@ const exampleSources = {
   ص: "audios/صاد مثال.mp3",
   س: "audios/السين مثال.mp3",
   ز: "audios/زاي مثال.mp3",
-  ف: "audios/فاء مثال.mp3",
+  ف: "audios/ف مثال 2.mp3",
   م: "audios/ميم مثال.mp3",
   ب: "audios/باء مثال.mp3",
   و: "audios/واو غير مثال.mp3",
@@ -446,7 +447,7 @@ const exampleSources = {
 // شاشة التحميل - Splash Screen
 // ====================================
 window.addEventListener("DOMContentLoaded", () => {
-  const splash   = document.getElementById("splash-screen");
+  const splash = document.getElementById("splash-screen");
   const mainPage = document.getElementById("main-page");
 
   // بعد 2.8 ثانية تختفي الشاشة وتظهر الصفحة الرئيسية
@@ -457,12 +458,11 @@ window.addEventListener("DOMContentLoaded", () => {
       mainPage.classList.remove("page-hidden");
       mainPage.classList.add("page-visible");
     }, 700);
-  }, 4000);
+  }, 2800);
 
   // إعداد أحداث انتهاء الفيديو
   document.querySelectorAll("video").forEach((video) => {
     video.addEventListener("ended", function () {
-
       this.currentTime = 0;
     });
   });
@@ -482,8 +482,12 @@ function switchTab(tabId, clickedBtn) {
   });
 
   // أزل active من جميع الأزرار والألواح
-  document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
-  document.querySelectorAll(".tab-pane").forEach((p) => p.classList.remove("active"));
+  document
+    .querySelectorAll(".tab-btn")
+    .forEach((b) => b.classList.remove("active"));
+  document
+    .querySelectorAll(".tab-pane")
+    .forEach((p) => p.classList.remove("active"));
 
   // فعّل الزر واللوح المطلوبين
   clickedBtn.classList.add("active");
@@ -495,7 +499,7 @@ function switchTab(tabId, clickedBtn) {
 // تشغيل الفيديو - Lazy Loading
 // ====================================
 function playCardVideo(card) {
-  const video     = card.querySelector("video");
+  const video = card.querySelector("video");
   if (!video) return;
 
   // التحميل الكسول: أضف src و poster عند أول ضغطة فقط
@@ -509,7 +513,6 @@ function playCardVideo(card) {
       if (v !== video) {
         v.pause();
         v.currentTime = 0;
-    
       }
     });
     video.play().catch(console.warn);
@@ -522,9 +525,9 @@ function playCardVideo(card) {
 // إدارة الصوت - تحميل عند الطلب فقط
 // ====================================
 let audioContext;
-const audioBuffers   = {};
+const audioBuffers = {};
 const exampleBuffers = {};
-let currentSource        = null;
+let currentSource = null;
 let currentExampleSource = null;
 
 function initAudioContext() {
@@ -535,10 +538,10 @@ function initAudioContext() {
 
 async function loadAudioBuffer(url, cache, letter) {
   if (cache[letter]) return cache[letter];
-  const response    = await fetch(url);
+  const response = await fetch(url);
   const arrayBuffer = await response.arrayBuffer();
-  const buffer      = await audioContext.decodeAudioData(arrayBuffer);
-  cache[letter]     = buffer;
+  const buffer = await audioContext.decodeAudioData(arrayBuffer);
+  cache[letter] = buffer;
   return buffer;
 }
 
@@ -562,7 +565,9 @@ async function playLetter(letter) {
   if (audioContext.state === "suspended") await audioContext.resume();
 
   if (currentSource) {
-    try { currentSource.stop(); } catch (e) {}
+    try {
+      currentSource.stop();
+    } catch (e) {}
     currentSource = null;
   }
 
@@ -599,7 +604,9 @@ async function playExample(letter) {
   if (audioContext.state === "suspended") await audioContext.resume();
 
   if (currentExampleSource) {
-    try { currentExampleSource.stop(); } catch (e) {}
+    try {
+      currentExampleSource.stop();
+    } catch (e) {}
     currentExampleSource = null;
   }
 
@@ -630,18 +637,18 @@ async function playExample(letter) {
 // الشرح التفصيلي - Modal
 // ====================================
 function showDetail(letter) {
-  const modal      = document.getElementById("detailModal");
+  const modal = document.getElementById("detailModal");
   const modalTitle = document.getElementById("modalTitle");
-  const modalText  = document.getElementById("modalText");
+  const modalText = document.getElementById("modalText");
 
   if (!letterDetails[letter]) {
     alert(`لا يوجد شرح تفصيلي للحرف "${letter}" بعد.`);
     return;
   }
 
-  modalTitle.textContent  = letterDetails[letter].title;
-  modalText.innerHTML     = letterDetails[letter].text;
-  modal.style.display     = "flex";
+  modalTitle.textContent = letterDetails[letter].title;
+  modalText.innerHTML = letterDetails[letter].text;
+  modal.style.display = "flex";
 }
 
 function closeModal() {
