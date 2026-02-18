@@ -502,23 +502,19 @@ function playCardVideo(card) {
   const video = card.querySelector("video");
   if (!video) return;
 
-  // التحميل الكسول: أضف src و poster عند أول ضغطة فقط
   if (!video.src && video.dataset.src) {
     video.src = video.dataset.src;
   }
 
-  if (video.paused) {
-    // أوقف جميع الفيديوهات الأخرى وأظهر thumbnail-ها
-    document.querySelectorAll("video").forEach((v) => {
-      if (v !== video) {
-        v.pause();
-        v.currentTime = 0;
-      }
-    });
-    video.play().catch(console.warn);
-  } else {
-    video.pause();
-  }
+  document.querySelectorAll("video").forEach((v) => {
+    if (v !== video) {
+      v.pause();
+      v.currentTime = 0;
+    }
+  });
+  
+  video.currentTime = 0;
+  video.play().catch(console.warn);
 }
 
 // ====================================
